@@ -30,7 +30,7 @@ divider 2b313a */
 *{
   color: white;
   font-family: monospace;
-
+  font-size: large;
 }
 body {
   background-color: #161a1e;
@@ -47,13 +47,9 @@ body {
   'deals deals deals deals settings';
   min-height: 100vh;
 }
-input{
-  background-color: #2b3139;
-  border: none;
-  padding: 10px;
-}
+
 section{
   padding: 20px;
-  border: 1px solid white;
+  /* border: 1px solid white; */
 }
 </style>

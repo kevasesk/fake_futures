@@ -1,5 +1,5 @@
 <template>
-  <section class="settings">
+  <section id="settings">
     <div class="container">
         <div class="cell">Доступно: <span class="value">{{this.balance}} USDT</span></div>
         <div class="cell">Инструмент: <span class="value">{{this.symbol}} ({{this.symbolPrice}})</span></div>
@@ -26,40 +26,40 @@ export default {
 </script>
 
 <style>
-  .settings{
+  #settings{
     background-color: #1e2329;
     grid-area: settings;
   }
-  .container{
+  #settings .container{
     display: grid;
     grid-template-columns: 1fr 1fr;
   }
-  .cell{
+  #settings .cell{
     padding: 10px;
   }
-  .value{
+  #settings .value{
     font-size: 20px;
   }
-  .row button{
+  #settings .row button{
     width:100%;
   }
-  input{
+  #settings input{
     background-color: #2b3139;
     border: none;
     padding: 10px;
     width: calc(100% - 20px);
   }
-  .actions{
+  #settings .actions{
     display:grid;
     grid-template-columns: 1fr 1fr;
   }
-  .long{
+  #settings .long{
     background-color: #f6465d;
     padding: 10px;
     width: 100%;
     border: none;
   }
-  .short{
+  #settings .short{
     background-color: #0ecb81;
     padding: 10px;
     width: 100%;
