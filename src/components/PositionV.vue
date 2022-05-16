@@ -11,14 +11,16 @@
       <div class="cell">%</div>
       <div class="cell"></div>
 
-      <div class="cell" :class="{ short: this.type == 0, long: this.type == 1 }"></div>
-      <div class="cell">{{this.symbol}}</div>
-      <div class="cell">{{this.size}}</div>
-      <div class="cell">{{this.startPrice}}</div>
-      <div class="cell">{{this.currentPrice}}</div>
-      <div class="cell">{{this.pnl}}</div>
-      <div class="cell">{{this.percent}}</div>
-      <div class="cell"><button class="close" :click="this.close()">Закрыть</button></div>
+      <template v-if="this.position">
+        <div class="cell" :class="{ short: this.position.type == 0, long: this.position.type == 1 }"></div>
+        <div class="cell">{{this.position.symbol}}</div>
+        <div class="cell">{{this.position.size}}</div>
+        <div class="cell">{{this.position.startPrice}}</div>
+        <div class="cell">{{this.$store.state.price}}</div>
+        <div class="cell">{{this.pnl}}</div>
+        <div class="cell">{{this.percent}}</div>
+        <div class="cell"><button class="close" @click="close">Закрыть</button></div>
+      </template>
 
     </div>
   </section>
@@ -26,22 +28,24 @@
 
 <script>
 export default {
-  data(){
-    return {
-      type: 1,
-      symbol: 'BTCUSDT',
-      size: 0.001,
-      startPrice: 31000,
-      currentPrice: 30000,
-      pnl: -1000,
-      percent: -3.3,
-
-    };
+  computed:{
+    position(){
+      return this.$store.state.position
+    },
+    pnl(){
+      var pnl = (this.$store.state.price - this.position.startPrice).toFixed(2)
+      return this.position.type == 1 ? pnl : -pnl;
+    },
+    percent(){
+      var percent = ( (this.$store.state.price - this.position.startPrice) / (this.position.startPrice / 100)).toFixed(4);
+      return this.position.type == 1 ? percent : -percent;
+    }
   },
   methods:{
     close(){
-      console.log('close');
-    }
+      this.$store.commit('setPosition', null)
+      
+    },
   }
 
 }
