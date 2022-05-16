@@ -1,26 +1,59 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <PositionV />
+  <SettingsV />
+  <DealsV />
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import PositionV from "./components/PositionV.vue";
+import SettingsV from "./components/SettingsV.vue";
+import DealsV from "./components/DealsV.vue";
 
 export default {
-  name: 'App',
+  name: "App",
   components: {
-    HelloWorld
-  }
-}
+    PositionV,
+    SettingsV,
+    DealsV,
+  },
+};
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+/* black - #161a1e
+slider background - 1e2329
+green - 0ecb81
+red - f6465d
+text - white - bbc3cc
+text-field - 2b3139
+divider 2b313a */
+*{
+  color: white;
+  font-family: monospace;
+
+}
+body {
+  background-color: #161a1e;
+}
+#app{
+  display: grid;
+  grid-template-areas:
+  'position position position position settings'
+  'deals deals deals deals settings'
+  'deals deals deals deals settings'
+  'deals deals deals deals settings'
+  'deals deals deals deals settings'
+  'deals deals deals deals settings'
+  'deals deals deals deals settings';
+  min-height: 100vh;
+}
+input{
+  background-color: #2b3139;
+  border: none;
+  padding: 10px;
+}
+section{
+  padding: 20px;
+  border: 1px solid white;
 }
 </style>
