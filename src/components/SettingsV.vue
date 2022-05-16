@@ -1,16 +1,12 @@
 <template>
   <section class="settings">
-    <div class="row balance">
-      <div class="col1">Доступно: {{this.balance}} USDT</div>
-      <div class="col2">Инструмент: <span class="symbol">{{this.symbol}}</span></div>
-    </div>
-    <div class="row">
-     <div class="col1"><input type="text" placeholder="Кол." name="count"/></div>
-     <div class="col2"> <input type="text" placeholder="Плечё" name="sholder"/></div>
-    </div>
-    <div class="row actions">
-      <div class="col1"><button class="long">Long</button></div>
-      <div class="col2"><button class="short">Short</button></div>
+    <div class="container">
+        <div class="cell">Доступно: <span class="value">{{this.balance}} USDT</span></div>
+        <div class="cell">Инструмент: <span class="value">{{this.symbol}} ({{this.symbolPrice}})</span></div>
+        <div class="cell"><input type="text" placeholder="Кол." name="count"/></div>
+        <div class="cell"><input type="text" placeholder="Плечё" name="sholder" :value="sholder"/></div>
+        <div class="cell"><button class="long">Long</button></div>
+        <div class="cell"><button class="short">Short</button></div>
     </div>
   </section>
 </template>
@@ -20,7 +16,9 @@ export default {
   data(){
     return {
       balance: 1000,
-      symbol: "BTCUSDT"
+      symbol: "BTCUSDT",
+      symbolPrice: 30000,
+      sholder: 30
     }
   }
 
@@ -32,26 +30,39 @@ export default {
     background-color: #1e2329;
     grid-area: settings;
   }
-  .row{
-    margin: 10px 0px;
+  .container{
     display: grid;
-    grid-template-areas:  'col1 col2';
+    grid-template-columns: 1fr 1fr;
   }
-  .col1{ grid-area: col1;}
-  .col2{ grid-area: col2;}
-  .symbol{
+  .cell{
+    padding: 10px;
+  }
+  .value{
     font-size: 20px;
+  }
+  .row button{
+    width:100%;
+  }
+  input{
+    background-color: #2b3139;
+    border: none;
+    padding: 10px;
+    width: calc(100% - 20px);
   }
   .actions{
     display:grid;
     grid-template-columns: 1fr 1fr;
   }
-  .actions .long{
+  .long{
     background-color: #f6465d;
     padding: 10px;
+    width: 100%;
+    border: none;
   }
-  .actions .short{
+  .short{
     background-color: #0ecb81;
     padding: 10px;
+    width: 100%;
+    border: none;
   }
 </style>
