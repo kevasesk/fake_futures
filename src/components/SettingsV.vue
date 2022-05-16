@@ -12,14 +12,27 @@
 </template>
 
 <script>
+
 export default {
   data(){
     return {
       balance: 1000,
       symbol: "BTCUSDT",
-      symbolPrice: 30000,
+      symbolPrice: 0,
       sholder: 30
     }
+  },
+  async created() {
+    var self = this;
+    const apiUrl = 'https://api.binance.com';
+    const action = '/api/v3/ticker/price';
+    const params = '?symbol=' + this.symbol;
+    setInterval(async function(){
+        const response = await fetch(apiUrl + action + params);
+        const data = await response.json();
+        self.symbolPrice = parseFloat(data.price).toFixed(2);
+    }, 1000);
+    
   }
 
 }
