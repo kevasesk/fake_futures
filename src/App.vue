@@ -1,5 +1,6 @@
 <template>
   <PositionV />
+  <div class="divider"></div>
   <SettingsV />
   <DealsV />
 </template>
@@ -39,6 +40,7 @@ body {
   display: grid;
   grid-template-areas:
   'position position position position settings'
+  'divider divider divider divider settings'
   'deals deals deals deals settings'
   'deals deals deals deals settings'
   'deals deals deals deals settings'
@@ -51,5 +53,17 @@ body {
 section{
   padding: 20px;
   /* border: 1px solid white; */
+}
+.divider{
+  /* width:100%; */
+  height: 2px;
+  background-color: #2b313a;
+  grid-area: divider;
+}
+.green{
+  color: #0ecb81;
+}
+.red{
+  color: #f6465d;
 }
 </style>

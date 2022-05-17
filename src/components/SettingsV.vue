@@ -3,7 +3,7 @@
     <div class="container">
         <div class="cell">Доступно: <span class="value">{{this.$store.state.balance}} USDT</span></div>
         <div class="cell">Инструмент: <span class="value">{{this.$store.state.symbol}} ({{this.$store.state.price}})</span></div>
-        <div class="cell"><input type="text" placeholder="Кол." name="count" :value="this.$store.state.value"/></div>
+        <div class="cell"><input type="text" placeholder="Кол." name="count" v-model="value" /></div>
         <div class="cell"><input type="text" placeholder="Плечё" name="sholder" :value="this.$store.state.sholder"/></div>
         <div class="cell"><button class="long" @click="long">Long</button></div>
         <div class="cell"><button class="short" @click="short">Short</button></div>
@@ -15,31 +15,60 @@
 
 export default {
   methods:{
+    now (){
+      var date = new Date(Date.now());
+      return date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds()
+    },
     long(){
-      this.$store.commit('setPosition', {
-          type: 1,
-          symbol: this.$store.state.symbol,
-          size: this.$store.state.value,
-          startPrice: this.$store.state.price,
-          currentPrice: this.$store.state.price,
-          pnl: 0,
-          percent: 0,
-      })
+      if(!this.position){
+          this.$store.commit('setPosition', {
+              type: 1,
+              dateStart: this.now(),
+              dateEnd: null,
+              symbol: this.$store.state.symbol,
+              size: this.$store.state.value,
+              startPrice: this.$store.state.price,
+              currentPrice: this.$store.state.price,
+              endPrice: null,
+              pnl: 0,
+              percent: 0,
+          })
+          this.$store.commit('setBalance', parseFloat(this.$store.state.balance) - (this.$store.state.value * this.$store.state.price));
+      }
 
     },
     short(){
-      this.$store.commit('setPosition', {
-          type: 0,
-          symbol: this.$store.state.symbol,
-          size: this.$store.state.value,
-          startPrice: this.$store.state.price,
-          currentPrice: this.$store.state.price,
-          pnl: 0,
-          percent: 0,
-      })
+       if(!this.position){
+        this.$store.commit('setPosition', {
+            type: 0,
+            dateStart: this.now(),
+            dateEnd: null,
+            symbol: this.$store.state.symbol,
+            size: this.$store.state.value,
+            startPrice: this.$store.state.price,
+            currentPrice: this.$store.state.price,
+            endPrice: null,
+            pnl: 0,
+            percent: 0,
+        })
+        this.$store.commit('setBalance', parseFloat(this.$store.state.balance) - (this.$store.state.value * this.$store.state.price));
+       }
 
     }
 
+  },
+  computed:{
+      value:{
+          get: function(){ 
+              return this.$store.state.value; 
+          }, 
+          set: function(newValue){ 
+              this.$store.commit('setValue',newValue);
+          }
+      },
+      position(){
+        return this.$store.state.position
+      },
   },
   async created() {
     var self = this;
@@ -49,7 +78,7 @@ export default {
     setInterval(async function(){
         const response = await fetch(apiUrl + action + params);
         const data = await response.json();
-        self.$store.commit('setPrice', parseFloat(data.price).toFixed(2));
+        self.$store.commit('setPrice', parseFloat(data.price).toFixed(3));
     }, 1000);
     
   },

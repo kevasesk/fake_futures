@@ -17,8 +17,12 @@
         <div class="cell">{{this.position.size}}</div>
         <div class="cell">{{this.position.startPrice}}</div>
         <div class="cell">{{this.$store.state.price}}</div>
-        <div class="cell">{{this.pnl}}</div>
-        <div class="cell">{{this.percent}}</div>
+        <div class="cell" :class="{ green: this.pnl > 0, red: this.pnl < 0 }">
+          {{this.pnl > 0 ? '+' + this.pnl : this.pnl}}
+        </div>
+        <div class="cell" :class="{ green: this.percent > 0, red: this.percent < 0 }">
+          {{this.percent > 0 ? '+' + this.percent : this.percent}}
+          </div>
         <div class="cell"><button class="close" @click="close">Закрыть</button></div>
       </template>
 
@@ -33,17 +37,32 @@ export default {
       return this.$store.state.position
     },
     pnl(){
-      var pnl = (this.$store.state.price - this.position.startPrice).toFixed(2)
-      return this.position.type == 1 ? pnl : -pnl;
+      if(this.position){
+        var pnl = ((this.$store.state.price - this.position.startPrice) * this.$store.state.value).toFixed(3)
+        return this.position.type == 1 ? pnl : -pnl;
+      }
+      return 0;
+      
     },
     percent(){
-      var percent = ( (this.$store.state.price - this.position.startPrice) / (this.position.startPrice / 100)).toFixed(4);
+      var percent = ( (this.$store.state.price - this.position.startPrice) * this.$store.state.value / (this.position.startPrice / 100) / 100).toFixed(3);
       return this.position.type == 1 ? percent : -percent;
     }
   },
   methods:{
+    now (){
+      var date = new Date(Date.now());
+      return date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds()
+    },
     close(){
-      this.$store.commit('setPosition', null)
+      var position = this.position;
+      position.dateEnd = this.now();
+      position.endPrice = this.$store.state.price;
+      position.pnl = this.pnl;
+      position.percent = this.percent;
+      this.$store.commit('addDeal', position);
+      this.$store.commit('setBalance', parseFloat(this.$store.state.balance) + parseFloat(this.pnl) + this.$store.state.value*position.startPrice);
+      this.$store.commit('setPosition', null);
       
     },
   }
@@ -62,6 +81,7 @@ export default {
   }
   #position .cell{
     margin: 5px 0px;
+    justify-self: center;
   }
   #position .short{
     background-color: #f6465d;
